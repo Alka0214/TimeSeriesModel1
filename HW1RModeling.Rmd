@@ -1,0 +1,157 @@
+---
+title: "HW 1 R model for dataset"
+author: "ad1660@scarletmail.rutgers.edu"
+date: "02/05/2025"
+output: html_document
+---
+
+#Creating Plots and Practice with R Modeling
+
+```{r}
+
+#Import CSV File. If you have an Excel file, save it as a CSV
+Typical_Employee_Survey_Data<-read.csv("/Users/alinadiduk/Documents/Documents\ -\ Alina’s\ MacBook\ Pro/Time\ Series\ Modeling/Typical_Employee_Survey_Data.csv",header = FALSE)
+str(Typical_Employee_Survey_Data)
+
+#1 Adds a header row name for each of the appropriate columns. Used the research survey data to name the rows accordingly. 
+column_names <- c("Age", "Gender", "SatisfactionScale", "ImportantJobCharecteristic", "YearsofEmployment", "PromotionPossiblityScale", "DecisionMakingPossibility", "BudgetDecision", "Proudness", "LoyaltyScale", "WorkplaceRelations")  
+colnames(Typical_Employee_Survey_Data) <- column_names
+
+#2 The 5-point summary for the data set. I used summary command in order to get the information in one spot all at ones instead of doing it separately. The info provided is minimum, 1st Quartile, median, mean,3rd Quartile, and maximum. 
+summary(Typical_Employee_Survey_Data)
+
+
+#Boxplot for only numerical values which are ages and years of employment.
+boxplot(Typical_Employee_Survey_Data$YearsofEmployment,
+        main = "Boxplot for Years of Employment",
+        col = "purple")
+boxplot(Typical_Employee_Survey_Data$Age,
+        main = "Boxplot for Age of Employees",
+        col = "yellow")
+
+#3 Convert the columns that need to be converted to Factors which are age and years of employment.
+
+Typical_Employee_Survey_Data$YearsofEmployment<-as.factor(Typical_Employee_Survey_Data$YearsofEmployment)
+
+Typical_Employee_Survey_Data$Age <- as.factor(Typical_Employee_Survey_Data$Age)
+
+#4 Plot the right visual for each column
+
+boxplot(as.numeric(as.character(Typical_Employee_Survey_Data$Age)), 
+        main = "Boxplot of Employee Ages", 
+        col = "blue", 
+        ylab = "Age")
+#Boxplot is great choice when it comes to plotting ages of the employees. It displays the lowest/highest ages as well as where on the age axis the age is distributed. 
+
+pie(table(Typical_Employee_Survey_Data$Gender), 
+    main = "Gender Distribution", 
+    col = c("navy", "pink"), 
+    labels = c("Male", "Female"))
+#Pie Chart is perfect to display the gender as well as using different colors for better comprehension. It perfectly shows that male ration to women is not even and most of the pie is taken by male employees.
+
+barplot(table(Typical_Employee_Survey_Data$SatisfactionScale), 
+        main = "Employee Satisfaction Scale", 
+        col = c("red", "orange", "blue", "darkgreen"), 
+        names.arg = c("1 - Very Satisfied", "2", "3", "4 - Least Satisfied"), 
+        ylab = "Amount")
+#Bar plot clearly displays that most of the employees are very satisfied with the job and it works great for comparison to other options. The use of multicolored helps to see the clear difference in the categories. 
+
+barplot(table(Typical_Employee_Survey_Data$ImportantJobCharecteristic),
+        main = "Most Important Job Characteristics",
+        col = c("green", "lightblue", "yellow", "purple", "blue"),
+        names.arg = c("High Income", "Job Security", "Flex Hours", "Advancement", "Enjoy Work"),
+        ylab = "Amount")
+#This bar plot displays that most of the employees prioritize the enjoyment that comes form work and another important category is high income. Other categories such as flex hrs, job security, and advancement are a little of concern to the employees. 
+
+boxplot(as.numeric(as.character(Typical_Employee_Survey_Data$YearsofEmployment)), 
+        main = "Boxplot of Years of Employment", 
+        col = "orange", 
+        ylab = "Years")
+#For the numerical values I have chosen to use bar plot as I think it is the best to show those outlines in categories and clearly displays the distribution of values. It displays that most of the employees have been working for the company for less than 10 years. 
+
+barplot(table(Typical_Employee_Survey_Data$PromotionPossiblityScale),
+        main = "Likeliness of Promotion",
+        col = c("green", "orange", "yellow", "purple", "blue"),
+        names.arg = c("Very Likely", "Likely", "Not Sure", "Unlikely", "Very Unlikely"),
+        ylab = "Count")
+#The bar plot shows that most of the employees feel as so they are unlikely to get promoted. The categories "likely" and "unlikely" are almost at the even split, while "very likely" is about at half of the "very unlikely" bar. 
+
+barplot(table(Typical_Employee_Survey_Data$DecisionMakingPossibility),
+        main = "Decision-Making Ability at Work",
+        col = c("green", "orange", "pink","lightblue"),
+        names.arg = c("Always", "Much of the Time","Sometimes","Never"),
+        ylab = "Count")
+#The plot chosen is bar plot that displays the employees involvement in making decisions that impact their job. It is still clear that employees are usually participating in decision-making processes that would effect their jobs. Which would display a high level of autonomy at the organization since the "Never" category is barely crossing 10 mark.
+
+
+barplot(table(Typical_Employee_Survey_Data$BudgetDecision), 
+        main = "Does Employee Participate in Budgetary Decisions", 
+        col = c("blue", "red"), 
+        names.arg = c("Yes", "No"), 
+        ylab = "Amount")
+#The plot chosen is bar plot that displays the ability of employees to participate in budgetary decisions. According to the plot "yes" is chosen more but it is closer to even split. 
+
+barplot(table(Typical_Employee_Survey_Data$Proudness),
+        main = "Proundness in Working at the Company",
+        col = c("lightgreen", "purple", "pink","navy"),
+        names.arg = c("Very Proud", "Somewhat Proud","Indifferent","Not At All Proud"),
+        ylab = "Count")
+#The bar plot displays that most of the employees are somewhat proud to be working at the company. There is only little amount who are not proud which dims in contrast to the amount of workers who are proud. 
+
+barplot(table(Typical_Employee_Survey_Data$LoyaltyScale),
+        main = "Would an Employee Leave if Offered to Work Elsewhere",
+        col = c("green", "red", "lightyellow", "purple", "lightblue"),
+        names.arg = c("Very Likely", "Likely", "Not Sure", "Unlikely", "Very Unlikely"),
+        ylab = "Count")
+#Bar plot displays that employees are unlikely to leave their current job to work somewhere else. the bar plot is mostly displaying that employees are loyal to the company they currently work at. 
+
+barplot(table(Typical_Employee_Survey_Data$WorkplaceRelations),
+        main = "Relationship Between Coworkers",
+        col = c("lightgreen", "red", "yellow", "purple", "blue"),
+        names.arg = c("Very Good", "Good", "So So", "Bad"),
+        ylab = "Count")
+#The bar plot works great to display data that has ratings because the comparison can be seen right away. According to the plot it is distinct that relations between workers is mostly good. 
+
+
+#5 Plot scatter plots to show few relationships
+
+plot(as.numeric(as.character(Typical_Employee_Survey_Data$Age)),Typical_Employee_Survey_Data$PromotionPossiblityScale,
+      main = "Age vs Promotion Possibility",
+      xlab = "Age",
+      ylab = "Pormotion 1-very likely to 5-least likely",
+      col = "red",
+      pch = 16)
+#The scatter plot can assist in analyzing how the age of the employees make them feel about their ability to get promoted. After carefully analyzing the graph it is clear that most of the employees feel that they are likely to get promoted(between ages 25-40) and the older they are the lest likely they are to get promoted according to the graph. 
+
+
+plot(as.numeric(as.character(Typical_Employee_Survey_Data$YearsofEmployment)),Typical_Employee_Survey_Data$Proudness,
+      main = "Years of Employment vs Proudness to be Working at the company",
+      xlab = "Years of Employment",
+      ylab = "1-very proud to 5-not at all proud",
+      col = "purple",
+      pch = 1)
+#This scatter plot would display how proud the employees are to be working for the company and to see if there is correlation between years of employment and proudness. The scatter plot is displaying that most of the employees are proud to be working for the company and it also seems that even after 50 years of employment the workers still are proud to work for the company.
+
+
+plot(as.numeric(as.character(Typical_Employee_Survey_Data$YearsofEmployment)),Typical_Employee_Survey_Data$SatisfactionScale,
+      main = "Satisfaction Scale vs Years of Employment",
+      xlab = "Years",
+      ylab = "1-most satisfied    4-least satisfied",
+      col = "navy",
+      pch = 1)
+
+##This graph shows the relationship of Years of Employment and Satisfaction with the job. The scatter plot displays how the longer the employees work the less satisfied they seem according to the graph. This scatter plot can assist in analyzing how working for the company eventually affects employees satisfaction after years of being employed. 
+
+
+plot(as.numeric(as.character(Typical_Employee_Survey_Data$YearsofEmployment)),Typical_Employee_Survey_Data$LoyaltyScale,
+      main = "Years of Employment vs Loyalty to the Company",
+      xlab = "Years of Employment",
+      ylab = "1-very loyal            5-not so loyal",
+      col = "red",
+      pch = 0)
+#This scatter plot is great to shows the correlation of employees ages to the loyalty they have ot the company(whether of not they would switch the company if offered more money). According to the graph it can be seen that it is even fro most of the younger ages to switch if offered more money elsewhere, while those who have been at the company longer have even split between staying loyal and switching. 
+
+
+```
+
+
